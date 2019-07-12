@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from './types'
 import { processHeaders } from './helpers/headers';
-import { transformRequest, transformResoponse } from './helpers/data';
+import { transformRequest, transformResponse } from './helpers/data';
 
 
 const defaults: AxiosRequestConfig = {
@@ -13,6 +13,9 @@ const defaults: AxiosRequestConfig = {
   },
   xsrfCookieName: 'XSRF-TOKEN',
   xsrfHeaderName: 'X-XSRF-TOKEN',
+  validateStatus (status: number): boolean {
+    return status >= 200 && status <= 300
+  },
   transformRequest: [
     function(data: any, headers: any): any {
       processHeaders(headers, data)
@@ -21,7 +24,7 @@ const defaults: AxiosRequestConfig = {
   ],
   transformResponse: [
     function(data: any): any {
-      return transformResoponse(data)
+      return transformResponse(data)
     }
   ]
 }
